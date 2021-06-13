@@ -96,6 +96,7 @@ const NavMenu = styled.div`
 `;
 
 const UserImg = styled.img`
+  min-width: 48px;
   width: 48px;
   height: 48px;
   border-radius: 50%;
