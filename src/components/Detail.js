@@ -1,38 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import db from "../firebase";
 
 function Detail() {
+  const { id } = useParams();
+  const [movie, setMove] = useState(null);
+  useEffect(() => {
+    //grap the movie info from db
+    db.collection("movies")
+      .doc(id)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          //save the movie data
+          setMove(doc.data());
+        } else {
+          //redirect to home
+        }
+      });
+  }, []);
+  console.log(movie);
   return (
     <Container>
-      <Background>
-        <img src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/4F39B7E16726ECF419DD7C49E011DD95099AA20A962B0B10AA1881A70661CE45/scale?width=1440&aspectRatio=1.78&format=jpeg" />
-      </Background>
-      <ImageTitle>
-        <img src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D7AEE1F05D10FC37C873176AAA26F777FC1B71E7A6563F36C6B1B497CAB1CEC2/scale?width=1440&aspectRatio=1.78"></img>
-      </ImageTitle>
-      <Controls>
-        <PlayButton>
-          <img src="/images/play-icon-black.png" />
-          <span>PLAY</span>
-        </PlayButton>
-        <TrailerButton>
-          <img src="/images/play-icon-white.png" />
-          <span>Trailer</span>
-        </TrailerButton>
-        <AddButton>
-            <span>+</span>
-        </AddButton>
-        <GroupWatchButton>
-            <img src="/images/group-icon.png" />
-        </GroupWatchButton>
-      </Controls>
-
-      <SubTitle>
-          2018 - 7m - Family, Fantasy, Kids, Animation
-      </SubTitle>
-      <Description>
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
-      </Description>
+      {movie && (
+        <>
+          <Background>
+            <img src={movie.backgroundImg} />
+          </Background>
+          <ImageTitle>
+            <img src={movie.titleImg}></img>
+          </ImageTitle>
+          <Controls>
+            <PlayButton>
+              <img src="/images/play-icon-black.png" />
+              <span>PLAY</span>
+            </PlayButton>
+            <TrailerButton>
+              <img src="/images/play-icon-white.png" />
+              <span>Trailer</span>
+            </TrailerButton>
+            <AddButton>
+              <span>+</span>
+            </AddButton>
+            <GroupWatchButton>
+              <img src="/images/group-icon.png" />
+            </GroupWatchButton>
+          </Controls>
+          <SubTitle>{movie.subTitle}</SubTitle>
+          <Description>
+            {movie.description}
+          </Description>
+        </>
+      )}
     </Container>
   );
 }
@@ -40,9 +60,9 @@ function Detail() {
 export default Detail;
 
 const Container = styled.div`
-    min-height: calc(100vh - 70px);
-    padding: 0 calc(3.5vw + 5px);
-    position: relative;
+  min-height: calc(100vh - 70px);
+  padding: 0 calc(3.5vw + 5px);
+  position: relative;
 `;
 
 const Background = styled.div`
@@ -84,14 +104,13 @@ const PlayButton = styled.button`
   align-items: center;
   height: 56px;
   background: rgb(249, 249, 249);
-  border:none;
+  border: none;
   letter-spacing: 1.8px;
   cursor: pointer;
 
   &:hover {
-    background: rgb(198, 198, 198); 
+    background: rgb(198, 198, 198);
   }
-
 `;
 
 const TrailerButton = styled(PlayButton)`
@@ -112,8 +131,8 @@ const AddButton = styled.button`
   background: rgba(0, 0, 0, 0.6);
   cursor: pointer;
   span {
-      font-size: 30px;
-      color: white;
+    font-size: 30px;
+    color: white;
   }
 `;
 const GroupWatchButton = styled(AddButton)`
@@ -124,8 +143,8 @@ const SubTitle = styled.div`
   color: rgb(249, 249, 249);
   font-size: 15px;
   min-hight: 20;
-  margin-top: 26px
-`
+  margin-top: 26px;
+`;
 
 const Description = styled.div`
   line-height: 1.4;
@@ -133,5 +152,4 @@ const Description = styled.div`
   margin-top: 16px;
   color: rgb(249, 249, 249);
   max-width: 760px;
-`
-
+`;

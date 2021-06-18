@@ -1,17 +1,22 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import styled from "styled-components";
 
 function Movies({ movies }) {
-  console.log(movies);
   return (
     <Container>
       <h4>Recommended for You</h4>
       <Content>
-        {movies && movies.map((movie) => {
-          return <Wrap>
-            <img src={movie.cardImg} />
-          </Wrap>;
-        })}
+        {movies &&
+          movies.map((movie) => {
+            return (
+              <Wrap>
+                <Link to={`/detail/${movie.id}`}>
+                <img src={movie.cardImg} />
+                </Link>
+              </Wrap>
+            );
+          })}
       </Content>
     </Container>
   );

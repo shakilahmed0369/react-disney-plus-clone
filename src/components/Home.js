@@ -4,8 +4,6 @@ import ImgSlider from "./ImgSlider";
 import Movies from "./Movies";
 import Viewers from "./Viewers";
 import db from "../firebase";
-import {useDispatch} from "react-redux";
-import {setMovies} from "../features/movie/movieSlice";
 
 function Home() {
 const [movies, setMovies] = useState(null);
